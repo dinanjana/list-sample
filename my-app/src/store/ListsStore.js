@@ -2,7 +2,7 @@ import { createStore, applyMiddleware } from 'redux';
 import promise from 'redux-promise-middleware';
 import _ from 'lodash';
 import StoreEvents from '../events';
-import  { moveItem, revertItem } from "../logic";
+import  { moveItem, revertItem, addHistory } from "../logic";
 
 const {
   UP,
@@ -13,7 +13,7 @@ const {
 
 const initialState = {
   list: [],
-  historyList: {},
+  historyList: [],
   error: null
 };
 
@@ -32,29 +32,27 @@ const reducer = (state = initialState, action) => {
     case UP:
       return _.chain(state)
       .clone()
+      .set('historyList', addHistory(state.list[action.payload].id, action.payload, true, _.clone(state.historyList)))
       .set('list', moveItem(state.list, true))
-      .set('historyList', state.historyList
-        .push({currIdx: action.payload, nextIdx: ++action.payload}))
       .value();
     case DOWN:
       return _.chain(state)
       .clone()
+      .set('historyList', addHistory(state.list[action.payload].id, action.payload, false, _.clone(state.historyList)))
       .set('list', moveItem(state.list))
-      .set('historyList', state.historyList
-      .push({currIdx: action.payload, nextIdx: --action.payload}))
       .value();
     case REVERT:
       const { postId, currentIdx, prevIdx } = action.payload;
-      const { newList, newHistory } = revertItem(state.historyList, state.list, postId, currentIdx, prevIdx);
+      const result = revertItem(_.clone(state.historyList), _.clone(state.list), postId, currentIdx, prevIdx);
       return _.chain(state)
       .clone()
-      .set('list', newList)
-      .set('historyList', newHistory)
+      .set('list', result.list)
+      .set('historyList', result.historyList)
       .value();
     case LOAD_DATA_FULFILLED:
       return _.chain(state)
         .clone()
-        .set('list', action.payload.data)
+        .set('list', action.payload)
         .value();
     default:
       return state;

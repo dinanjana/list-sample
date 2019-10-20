@@ -12,7 +12,7 @@ const {
 const loadData = () => ({
   type: LOAD_DATA,
   payload: getList()
-  .then(data => data)
+  .then(data => _.slice(data.data, 0, 5))
   .catch(e => ({error: e})),
 });
 
@@ -21,11 +21,12 @@ const move = (currentIdx, moveUp = true) => ({
   payload: currentIdx
 });
 
-const revert = (currentIdx, prevIdx) => ({
+const revert = (postId, currentIdx, prevIdx) => ({
   type: REVERT,
   payload: {
     currentIdx,
-    prevIdx
+    prevIdx,
+    postId
   }
 });
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { List } from './connectors'
+import { List, HistoryList } from './connectors'
 
 function styles () {
   return {
@@ -10,8 +10,11 @@ function styles () {
 class App extends React.Component {
   render() {
     return (
-      <div className="container" style={styles()}>
-        <List/>
+      <div>
+        <tr>
+          <td><List/></td>
+          <td><HistoryList/></td>
+        </tr>
       </div>
     )
   }

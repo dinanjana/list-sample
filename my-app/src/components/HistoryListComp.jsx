@@ -6,8 +6,8 @@ import HistoryListItem from './HistoryListItem';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: '50%',
-    maxWidth: 360,
+    width: '100%',
+    maxWidth: 720,
     backgroundColor: theme.palette.background.paper,
   },
   nested: {
@@ -20,23 +20,25 @@ const HistoryListComp = (props) => {
   const { list, revert } = props;
   const classes = useStyles();
   return (
-    <List
-      component="nav"
-      aria-labelledby="nested-list-subheader"
-      subheader={
-        <ListSubheader component="div" id="nested-list-subheader">
+    <div className={classes.root}>
+      <List
+        component="nav"
+        aria-labelledby="nested-list-subheader"
+        subheader={
+          <ListSubheader component="div" id="nested-list-subheader">
             List of actions committed
-        </ListSubheader>
-      }
-      className={classes.root}>
-      {
-        list.reverse().map((ele) => (
-          <HistoryListItem
-            revert={revert}
-            history={ele}
-          />))
-      }
-    </List>
+          </ListSubheader>
+        }
+        className={classes.root}>
+        {
+          list.reverse().map((ele) => (
+            <HistoryListItem
+              revert={revert}
+              history={ele}
+            />))
+        }
+      </List>
+    </div>
   );
 };
 

@@ -11,24 +11,48 @@ const moveItem = (list, up) => {
   }
 };
 
-const revertItem = (history, list, postId, currentIdx, prevIdx) => {
-  const historyList = history[postId];
-  const idx = _.findIndex(historyList, (history) => history.currentIdx === currentIdx && history.prevIdx === prevIdx);
-  const newHistoryList = _.pullAt(historyList, [0, idx]);
+const revertItem = (historyList, list, postId, currentIdx, prevIdx) => {
+  const historyIdx = _.findIndex(historyList,
+    (history) => history.currentIdx === currentIdx && history.prevIdx === prevIdx && history.postId === postId);
 
-  list.splice(prevIdx, 0, list[_.findIndex(list, ele => ele.postId === postId)]);
-  const curr = _.findIndex(list, ele => ele.postId === postId);
-  const newList = _.remove(list, ({ index }) => index !== curr);
-  const newHistory =  _.set(history, postId, newHistoryList);
+  console.log(historyIdx)
 
-  return {
-    newList,
-    newHistory
-  };
+  for (let i = 0; i <= historyIdx; i++) {
+    if (historyList[i].postId === postId) {
+      historyList[i] = null;
+    }
+  }
 
+  const postIdx = _.findIndex(list, (elm) => elm.id === postId);
+  const post = list.splice(postIdx, 1);
+  list.splice(prevIdx, 0, post[0]);
+
+  return { list, historyList: _.compact(historyList) };
+};
+
+const addHistory = (postId, currentIdx, up, historyList) => {
+  let nextIdx;
+  const prevIdx = currentIdx;
+  if (up) {
+    if ((currentIdx - 1) < 0) {
+      nextIdx = 4;
+    } else {
+      nextIdx = --currentIdx;
+    }
+  } else {
+    if ((currentIdx + 1) > 4) {
+      nextIdx = 0;
+    } else {
+      nextIdx = ++currentIdx;
+    }
+  }
+
+  historyList.push({ prevIdx, postId, currentIdx: nextIdx});
+  return historyList;
 };
 
 export {
   moveItem,
-  revertItem
+  revertItem,
+  addHistory
 }

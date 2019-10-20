@@ -7,7 +7,7 @@ import CustomListItem from './CustomListItem';
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
-    maxWidth: 360,
+    maxWidth: 720,
     backgroundColor: theme.palette.background.paper,
   },
   nested: {
@@ -15,30 +15,30 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-//const classes = useStyles();
-
 const ListComp = (props) => {
   const { list, move } = props;
-  console.log(`List comp ${JSON.stringify(props)}`)
+  const classes = useStyles();
   return (
-    <List
-      component="nav"
-      aria-labelledby="nested-list-subheader"
-      subheader={
-        <ListSubheader component="div" id="nested-list-subheader">
-          Sortable Post List
-        </ListSubheader>
-      }
-      /*className={classes.root}*/>
-      {
-        list.map((ele, i) => (
-          <CustomListItem
-            move={move}
-            text={ele.body}
-            idx={i}
-          />))
-      }
-    </List>
+    <div className={classes.root}>
+      <List
+        component="nav"
+        aria-labelledby="nested-list-subheader"
+        subheader={
+          <ListSubheader component="div" id="nested-list-subheader">
+            Sortable Post List
+          </ListSubheader>
+        }
+        className={classes.root}>
+        {
+          list.map((ele, i) => (
+            <CustomListItem
+              move={move}
+              text={ele}
+              idx={i}
+            />))
+        }
+      </List>
+    </div>
   );
 };
 
