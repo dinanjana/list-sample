@@ -17,7 +17,7 @@ const HistoryListItem = ({ history, revert }) => {
   const classes = useStyles();
   return(
     <ListItem>
-      <ListItemText primary={`Moved Post ${history.postId} from index ${history.prevIdx} to ${history.currentIdx}`}/>
+      <ListItemText secondary={`Moved Post ${history.postId} from index ${history.prevIdx} to ${history.currentIdx}`}/>
       <Button variant="contained" color="primary" className={classes.button} button onClick={ () => revert(history.postId, history.currentIdx, history.prevIdx) }>
         Time travel
       </Button>

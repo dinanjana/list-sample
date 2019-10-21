@@ -7,7 +7,7 @@ import HistoryListItem from './HistoryListItem';
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
-    maxWidth: 720,
+    maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
   },
   nested: {
